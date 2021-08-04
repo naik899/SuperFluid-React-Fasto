@@ -126,8 +126,9 @@ const Markup = () => {
   const { menuToggle } = useContext(ThemeContext);
   const routes = [
     /// Dashboard
-    { url: "/admin/index", component: Index },
-    { url: "/admin/create-flow", component: CreateFlow },
+    { url: "index", component: Index },
+    { url: "", component: Index },
+    { url: "create-flow", component: CreateFlow },
  
 
     
