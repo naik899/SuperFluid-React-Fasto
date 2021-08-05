@@ -226,9 +226,9 @@ const SideBar = () => {
               <li><Link className={`${path === "create-flow" ? "mm-active" : ""}`} to="/create-flow">Create New Flow</Link></li>
               <li><Link className={`${path === "apply-loan" ? "mm-active" : ""}`} to="/apply-loan">Apply for Loan</Link></li>
             
-              <li><Link className={`${path === "app-calender" ? "mm-active" : ""}`}to="/app-calender">Stream Adjustment</Link></li>
-              <li><Link className={`${path === "app-calender" ? "mm-active" : ""}`}to="/app-calender">Pre Payment</Link></li>
-              <li><Link className={`${path === "app-calender" ? "mm-active" : ""}`}to="/app-calender">Pre Closure</Link></li>
+              <li><Link className={`${path === "stream-adjustment" ? "mm-active" : ""}`}to="/stream-adjustment">Stream Adjustment</Link></li>
+              <li><Link className={`${path === "pre-payment" ? "mm-active" : ""}`}to="/pre-payment">Pre Payment</Link></li>
+              <li><Link className={`${path === "pre-closure" ? "mm-active" : ""}`}to="/pre-closure">Pre Closure</Link></li>
               
             </ul>
           </li>
@@ -238,7 +238,7 @@ const SideBar = () => {
               <span className="nav-text">Enquiry</span>
             </Link>
 				<ul>
-				  <li><Link className={`${path === "chart-rechart" ? "mm-active" : ""}`} to="/chart-rechart">Notifications</Link></li>
+				  <li><Link className={`${path === "messages" ? "mm-active" : ""}`} to="/messages">Messages</Link></li>
 				  <li><Link className={`${path === "chart-chartjs" ? "mm-active" : ""}`} to="/chart-chartjs">Account Statement</Link></li>
 				  <li><Link className={`${path === "chart-chartist" ? "mm-active" : ""}`} to="/chart-chartist">Loan Details</Link></li>
 				</ul>

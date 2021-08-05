@@ -13,7 +13,6 @@ const CreateFlow = () => {
   
     async function initSuperFluid() {
         let walletAddress = "";
-        alert("Hello");
         async function initialisation() {
           window.init = true;
           const sf = new SuperfluidSDK.Framework({
@@ -35,16 +34,11 @@ const CreateFlow = () => {
             address: walletAddress,
             token: "0x5943F705aBb6834Cad767e6E4bB258Bc48D9C947",
           });
-          try {
-            const details = await carol.details();
-            console.log(details);
-          } catch (event) {
-            debugger;
-          }
+        
     
           await carol.flow({
             recipient: "0x696912BD2e03a17DCc5D7e28bC505eFCA8469843",
-            flowRate: "385802469135802",
+            flowRate: "000000000802469",
           });
     
           const details = await carol.details();

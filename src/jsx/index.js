@@ -122,6 +122,9 @@ import { ThemeContext } from "../context/ThemeContext";
 import ScrollToTop from './layouts/ScrollToTop';
 import CreateFlow from "./components/AppsMenu/Hackathon/CreateFlow";
 import ApplyLoan from "./components/AppsMenu/Hackathon/ApplyLoan";
+import StreamAdjustment from "./components/AppsMenu/Hackathon/StreamAdjustment";
+import PreClosure from "./components/AppsMenu/Hackathon/PreClosure";
+import PrePayment from "./components/AppsMenu/Hackathon/PrePayment";
 
 const Markup = () => {
   const { menuToggle } = useContext(ThemeContext);
@@ -131,6 +134,10 @@ const Markup = () => {
     { url: "", component: Index },
     { url: "create-flow", component: CreateFlow },
     { url: "apply-loan", component: ApplyLoan },
+    { url: "stream-adjustment", component: StreamAdjustment },
+    { url: "pre-payment", component: PrePayment },
+    { url: "pre-closure", component: PreClosure },
+    { url: "messages", component: Messages },
 
     
     { url: "email-compose", component: Compose },
