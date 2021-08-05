@@ -121,6 +121,7 @@ import { ThemeContext } from "../context/ThemeContext";
 
 import ScrollToTop from './layouts/ScrollToTop';
 import CreateFlow from "./components/AppsMenu/Hackathon/CreateFlow";
+import ApplyLoan from "./components/AppsMenu/Hackathon/ApplyLoan";
 
 const Markup = () => {
   const { menuToggle } = useContext(ThemeContext);
@@ -129,7 +130,7 @@ const Markup = () => {
     { url: "index", component: Index },
     { url: "", component: Index },
     { url: "create-flow", component: CreateFlow },
- 
+    { url: "apply-loan", component: ApplyLoan },
 
     
     { url: "email-compose", component: Compose },

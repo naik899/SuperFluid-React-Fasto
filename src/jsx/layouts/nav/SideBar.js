@@ -224,7 +224,7 @@ const SideBar = () => {
             </Link>
             <ul >
               <li><Link className={`${path === "create-flow" ? "mm-active" : ""}`} to="/create-flow">Create New Flow</Link></li>
-              <li><Link className={`${path === "post-details" ? "mm-active" : ""}`} to="/post-details">Apply for Loan</Link></li>
+              <li><Link className={`${path === "apply-loan" ? "mm-active" : ""}`} to="/apply-loan">Apply for Loan</Link></li>
             
               <li><Link className={`${path === "app-calender" ? "mm-active" : ""}`}to="/app-calender">Stream Adjustment</Link></li>
               <li><Link className={`${path === "app-calender" ? "mm-active" : ""}`}to="/app-calender">Pre Payment</Link></li>
