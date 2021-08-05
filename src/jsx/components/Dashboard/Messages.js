@@ -25,7 +25,7 @@ const Messages = () =>{
 									<div className="d-flex mr-auto mb-sm-0 mb-2 align-items-center">
 										<img src={profile1} alt="" width="60" className="rounded-circle mr-3" />
 										<div>
-											<h5 className="fs-18 text-black font-w600">Peter Parkur</h5>
+											<h5 className="fs-18 text-black font-w600">Gyan Lakshmi</h5>
 											<Dropdown className="dropdown">
 												<Dropdown.Toggle variant="" as="div" className="i-false">
 													<Link to={"#"} className="text-primary" data-toggle="dropdown" aria-expanded="false">
@@ -43,7 +43,7 @@ const Messages = () =>{
 											</Dropdown>
 										</div>
 									</div>
-									<Link to={"./contacts"} className="btn btn-primary btn-rounded text-white shadow-primary"><i className="las la-comment-dots mr-2 scale5"></i>+ New</Link>
+									
 								</div>
 							</div>
 						</div>
