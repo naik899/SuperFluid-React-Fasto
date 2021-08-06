@@ -46,6 +46,14 @@ export function logout(history) {
    
 }
 
+export function authenticate(history)
+{
+    return (dispatch) => {
+        history.push('/');
+        window.location.reload();
+    }
+}
+
 export function loginAction(email, password, history) {
     return (dispatch) => {
         login(email, password)

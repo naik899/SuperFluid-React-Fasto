@@ -5,11 +5,15 @@ import Loader from '../pages/Loader/Loader';
 import {
     loadingToggleAction,
     loginAction,
+	authenticate
 } from '../../store/actions/AuthActions';
 // image
 import logo from "../../images/logo-full.png";
 import logo2 from "../../images/logo-full-white.png";
 import login from "../../images/login-bg.jpg";
+import { connectWallet } from  "../../services/Interact";
+import SuperfluidSDK from "@superfluid-finance/js-sdk";
+import Web3 from "web3";
 
 function Login(props) {
 	const [email, setEmail] = useState('demo@demo.com');
@@ -17,28 +21,23 @@ function Login(props) {
     const [errors, setErrors] = useState(errorsObj);
     const [password, setPassword] = useState('123456');
 
+	const [walletAddress, setWallet] = useState("");
+ 	const [status, setStatus] = useState("");
+
     const dispatch = useDispatch();
-   //setEmail('');
-    //setPassword('123456');
-    function onLogin(e) {
-        e.preventDefault();
-        let error = false;
-        const errorObj = { ...errorsObj };
-        if (email === '') {
-            errorObj.email = 'Email is Required';
-            error = true;
-        }
-        if (password === '') {
-            errorObj.password = 'Password is Required';
-            error = true;
-        }
-        setErrors(errorObj);
-        if (error) {
-			return;
-		}        
+  
+
+	async function connectWalletPressed(e){
+		e.preventDefault();
+
+		const walletResponse = await connectWallet();
+		setStatus(walletResponse.status);
+		setWallet(walletResponse.address);
 		dispatch(loadingToggleAction(true));
-        dispatch(loginAction(email, password, props.history));
-    }
+		dispatch(loginAction(email, password, props.history));
+	}
+
+	
 
   return (
 		<div className="login-wrapper">
@@ -84,7 +83,7 @@ function Login(props) {
                                     {props.successMessage}
                                 </div>
                             )}
-							<form onSubmit={onLogin}>
+							<form onSubmit={connectWalletPressed}>
                                 <div className="text-center">
 								<button
 								  type="submit"
