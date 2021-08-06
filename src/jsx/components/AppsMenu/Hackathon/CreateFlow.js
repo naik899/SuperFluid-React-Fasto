@@ -36,10 +36,12 @@ const CreateFlow = () => {
           });
         
     
-          await carol.flow({
+          let result = await carol.flow({
             recipient: "0x696912BD2e03a17DCc5D7e28bC505eFCA8469843",
             flowRate: "000000000802469",
           });
+
+          console.log(result);
     
           const details = await carol.details();
           console.log(details);

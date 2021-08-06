@@ -125,6 +125,8 @@ import ApplyLoan from "./components/AppsMenu/Hackathon/ApplyLoan";
 import StreamAdjustment from "./components/AppsMenu/Hackathon/StreamAdjustment";
 import PreClosure from "./components/AppsMenu/Hackathon/PreClosure";
 import PrePayment from "./components/AppsMenu/Hackathon/PrePayment";
+import LogOut from "./components/AppsMenu/Hackathon/LogOut";
+import Logout from "./layouts/nav/Logout";
 
 const Markup = () => {
   const { menuToggle } = useContext(ThemeContext);
@@ -138,6 +140,7 @@ const Markup = () => {
     { url: "pre-payment", component: PrePayment },
     { url: "pre-closure", component: PreClosure },
     { url: "messages", component: Messages },
+    { url: "logout", component: LogOut },
 
     
     { url: "email-compose", component: Compose },

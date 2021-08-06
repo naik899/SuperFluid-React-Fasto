@@ -42,6 +42,8 @@ export function logout(history) {
     return {
         type: LOGOUT_ACTION,
     };
+
+   
 }
 
 export function loginAction(email, password, history) {

@@ -245,7 +245,7 @@ const SideBar = () => {
           </li>
 
           <li className={`${widget.includes(path) ? "mm-active" : ""}`}>
-            <Link to="widget-basic" className="ai-icon" >
+            <Link to="/logout" className="ai-icon" >
               <i className="flaticon-381-exit"></i>
               <span className="nav-text">Logout</span>
             </Link>

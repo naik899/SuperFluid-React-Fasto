@@ -47,8 +47,7 @@ function Login(props) {
 					<img src={logo2} alt="" />
 				  </Link>
 				<div className="login-description">
-					<h2 className="text-white mb-4">Check the Status</h2>
-					<p className="fs-12">It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters,</p>
+					<h2 className="text-white mb-4">Lending platform</h2>
 					<ul className="social-icons mt-4">
 						<li><Link to={"#"}><i className="fa fa-facebook"></i></Link></li>
 						<li><Link to={"#"}><i className="fa fa-twitter"></i></Link></li>
@@ -57,7 +56,7 @@ function Login(props) {
 					<div className="mt-5">
 						<Link to={"#"} className="text-white mr-4">Privacy Policy</Link>
 						<Link to={"#"} className="text-white mr-4">Contact</Link>
-						<Link to={"#"} className="text-white">© 2021 DexignZone</Link>
+						<Link to={"#"} className="text-white mr-4">Terms & Conditions</Link>						
 					</div>
 				</div>
 			</div>
@@ -72,9 +71,9 @@ function Login(props) {
 							{ /*  <Link to="/">
 								<img src={logo} alt="" />
                             </Link> */}
-							  <h2 className="text-primary">Welcome to Fasto</h2>
+							  <h2 className="text-primary">Welcome to Fasto Lending Platform</h2>
 							</div>
-							<h4 className=" mb-4 ">Sign in by entering information below</h4>
+							<h4 className=" mb-4 ">Connect to metamask currently supports Goerli testnet and get some ETHx in your wallet to run this app</h4>
                             {props.errorMessage && (
                                 <div className='text-danger'>
                                     {props.errorMessage}
@@ -86,68 +85,16 @@ function Login(props) {
                                 </div>
                             )}
 							<form onSubmit={onLogin}>
-                                <div className="form-group">
-									<label className="mb-2 ">
-									  <strong>Email</strong>
-									</label>
-									<input type="email" className="form-control"
-									  value={email}
-									   onChange={(e) => setEmail(e.target.value)}
-                                       //defaultValue="abcd@gmail.com"
-									/>
-								  {errors.email && <div className="text-danger fs-12">{errors.email}</div>}
-								</div>
-								<div className="form-group">
-									<label className="mb-2 "><strong>Password</strong></label>
-									<input
-									  type="password"
-									  className="form-control"
-									  value={password}
-										onChange={(e) =>
-											setPassword(e.target.value)
-										}
-									/>
-									{errors.password && <div className="text-danger fs-12">{errors.password}</div>}
-								</div>
-							  <div className="form-row d-flex justify-content-between mt-4 mb-2">
-								<div className="form-group">
-								  <div className="custom-control custom-checkbox ml-1 ">
-									<input
-									  type="checkbox"
-									  className="custom-control-input"
-									  id="basic_checkbox_1"
-									/>
-									<label
-									  className="custom-control-label"
-									  htmlFor="basic_checkbox_1"
-									>
-									  Remember my preference
-									</label>
-								  </div>
-								</div>
-								{/* <div className="form-group">
-								  <Link className="text-primary" to="page-forgot-password">
-									Forgot Password ?
-								  </Link>
-								</div> */}
-							  </div>
-							  <div className="text-center">
+                                <div className="text-center">
 								<button
 								  type="submit"
 								  className="btn btn-primary btn-block"
 								>
-								  Sign In
+								  Connect to Metamask
 								</button>
 							  </div>
 							</form>
-							<div className="new-account mt-3">
-							  <p className="">
-								Don't have an account?{" "}
-								<Link className="text-primary" to="./page-register">
-								  Sign up
-								</Link>
-							  </p>
-							</div>
+							
 						  </div>
 						</div>
 					  </div>
