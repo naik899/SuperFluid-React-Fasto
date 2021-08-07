@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
 
 import PageTitle from "../../../layouts/PageTitle";
-import PrePaymentPage from "../../Forms/ReduxWizard/PrePaymentPage";
+import PatientTable from "../../table/PatientTable";
 
 const Lender = props =>  {
 
@@ -9,7 +9,7 @@ const Lender = props =>  {
   return (
     <Fragment>
       <PageTitle activeMenu="Applications" motherMenu="Lender" />
-      <PrePaymentPage></PrePaymentPage>
+     <PatientTable></PatientTable>
     
     </Fragment>
   );

@@ -8,9 +8,25 @@ import Web3 from "web3";
 import LoanRequest from "../../../../contracts/LoanRequest.json";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+
+
 const WizardFormFirstPage = props => {
   const { handleSubmit } = props;
   return (
+	  <>
+
+<ToastContainer
+                  position="top-right"
+                  autoClose={5000}
+                  hideProgressBar={false}
+                  newestOnTop
+                  closeOnClick
+                  rtl={false}
+                  pauseOnFocusLoss
+                  draggable
+                  pauseOnHover
+                />
+
 		<form onSubmit={handleSubmit}>
 			<div className="validate-redux-form row">
 				<div className="col-sm-6">
@@ -69,6 +85,8 @@ const WizardFormFirstPage = props => {
 				</div>
 			</div>
 		</form>
+
+		</>
   );
 };
 
@@ -99,126 +117,144 @@ export default compose(
 
 		document.getElementById("applyloan").disabled = true;
 	
-	var loanAccountNum = Math.floor(Math.random() * 90000) + 10000;
-    let web3 = new Web3(Web3.givenProvider);
-    let walletAddress =  localStorage.getItem('walletAddress');
-    const coinContract = new web3.eth.Contract(LoanRequest.abi);
+		var loanAccountNum = Math.floor(Math.random() * 90000) + 10000;
+		let web3 = new Web3(Web3.givenProvider);
+		let walletAddress =  localStorage.getItem('walletAddress');
+		const coinContract = new web3.eth.Contract(LoanRequest.abi);
 
-	let loanamount = document.getElementsByName("loanAmount")[0].value;
-	let kyc2 = document.getElementsByName("uid")[0].value;
-	let installmentTenure = document.getElementsByName("installment")[0].value;
-	let loanduration = document.getElementsByName("loanTenure")[0].value; 
+		let loanamount = document.getElementsByName("loanAmount")[0].value;
+		let kyc2 = document.getElementsByName("uid")[0].value;
+		let installmentTenure = document.getElementsByName("installment")[0].value;
+		let loanduration = document.getElementsByName("loanTenure")[0].value; 
 
-	if(loanamount == null || loanamount  == undefined)
-	{
-		alert("Loan ammount cannot be empty");
-		toast.success("✅ Top Right !", {
-			position: "top-right",
-			autoClose: 5000,
-			hideProgressBar: false,
-			closeOnClick: true,
-			pauseOnHover: true,
-			draggable: true,
-		  });
-	}
-		
-
-	if(loanamount <= 0)
-	{
-		// toast.success("✅ Top Right !", {
-		// 	position: "top-right",
-		// 	autoClose: 5000,
-		// 	hideProgressBar: false,
-		// 	closeOnClick: true,
-		// 	pauseOnHover: true,
-		// 	draggable: true,
-		//   });
-		  alert("Loan amount must be greater than 0");
-		  document.getElementById("applyloan").disabled = false;
-	}	
-	else if(kyc2 == null || kyc2 == undefined)
-	{
-		alert("UID is mandatory");
-		document.getElementById("applyloan").disabled = false;
-	}
-	else if(loanduration < 1 || loanduration > 60)
-	{
-		alert("Loan tenure should be min of 1 month and max of 60 months");
-		document.getElementById("applyloan").disabled = false;
-	}
-		
-	else if(installmentTenure <1 || installmentTenure > 30)
-	{
-		alert("Installement tenure should be min of 1 day and max of 30 days");
-		document.getElementById("applyloan").disabled = false;
-	}
-		
-	else{
-
-		let applicantname = document.getElementsByName("fullName")[0].value;
-		let applicantEmail = document.getElementsByName("email")[0].value;
-		let kyc1 = document.getElementsByName("panCard")[0].value;
-		let purpose = document.getElementsByName("loanPurpose")[0].value;
-		let guaranteer = document.getElementsByName("guarantorMobileNumber")[0].value;
-		let currentDate = new Date();
-		currentDate.setMonth(currentDate.getMonth() + parseInt(loanduration));
-		let loanTenure = parseInt((currentDate - new Date()) / (1000 * 60 * 60 * 24), 10); 		
-		let rate = 2;
-		let emi = loanamount * rate * (((1+ rate) * loanduration) / ((1+ rate)* (loanduration - 1)));
-		let dailyEmi = emi/30;
-		let streamAmount = dailyEmi/86400;
-
-		let loanApplObject =  {
-			loanId: loanAccountNum,
-			name: applicantname,
-			email: applicantEmail,
-			panCard: kyc1,
-			uid: kyc2,
-			purpose: purpose,
-			collateral: guaranteer,
-			loanTenure: loanTenure,
-			amount: loanamount,
-			loanEndDate: currentDate,
-			appliedOn: new Date(),
-			streamAmount: streamAmount,
-			dailyEmi: dailyEmi,
-			monthlyEmi: emi,
-			contractAddress: "",
-			status: "",
-			txHash: "" 
+		if(loanamount == null || loanamount  == undefined)
+		{
+			toast.error("Loan ammount cannot be empty", {
+				position: "top-right",
+				autoClose: 5000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+			});
+			document.getElementById("applyloan").disabled = false;
 		}
+			
 
-		let applications = [];
-		applications = JSON.parse(localStorage.getItem("loanApplications"));
-		if(applications == null)
-			applications = [];
+		if(loanamount <= 0)
+		{
+			
+			toast.error("Loan amount must be greater than 0", {
+				position: "top-right",
+				autoClose: 5000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+			});
+			document.getElementById("applyloan").disabled = false;
+		}	
+		else if(kyc2 == null || kyc2 == undefined)
+		{
+			toast.error("UID is mandatory", {
+				position: "top-right",
+				autoClose: 5000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+			});
+			document.getElementById("applyloan").disabled = false;
+		}
+		else if(loanduration < 1 || loanduration > 60)
+		{
+			toast.error("Loan tenure should be min of 1 month and max of 60 months", {
+				position: "top-right",
+				autoClose: 5000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+			});
+			document.getElementById("applyloan").disabled = false;
+		}
+			
+		else if(installmentTenure <1 || installmentTenure > 30)
+		{
+			toast.error("Installment tenure should be min of 1 day and max of 30 days", {
+				position: "top-right",
+				autoClose: 5000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+			});
+			
+			document.getElementById("applyloan").disabled = false;
+		}
+			
+		else{
 
-		coinContract.deploy({
-								data: LoanRequest.bytecode,
-								arguments:[
-									applicantname, applicantEmail, kyc1, kyc2, purpose, guaranteer,loanamount , 290, loanTenure//                 -9_token
-								]
-								}).send({from: walletAddress}, function(error, transactionHash){ loanApplObject.txHash = transactionHash; })
-								.on('error', function(error){ debugger; alert("Failed with error: " + error.message); document.getElementById("applyloan").disabled = false; })
-								.on('transactionHash', function(transactionHash){ loanApplObject.txHash = transactionHash })
-								.on('receipt', function(receipt){
-								
-									loanApplObject.contractAddress = receipt.contractAddress;
-									loanApplObject.status = "Applied";
-									applications.push(loanApplObject);
-									localStorage.setItem("loanApplications", JSON.stringify(applications));
-									console.log(applications);
-									document.getElementById("applyloan").disabled = false;
-									alert("Loan application successfully submitted");
-								})
-								.on('confirmation', function(confirmationNumber, receipt){ });	
-	}
+			let applicantname = document.getElementsByName("fullName")[0].value;
+			let applicantEmail = document.getElementsByName("email")[0].value;
+			let kyc1 = document.getElementsByName("panCard")[0].value;
+			let purpose = document.getElementsByName("loanPurpose")[0].value;
+			let guaranteer = document.getElementsByName("guarantorMobileNumber")[0].value;
+			let currentDate = new Date();
+			currentDate.setMonth(currentDate.getMonth() + parseInt(loanduration));
+			let loanTenure = parseInt((currentDate - new Date()) / (1000 * 60 * 60 * 24), 10); 		
+			let rate = 2;
+			let emi = loanamount * rate * (((1+ rate) * loanduration) / ((1+ rate)* (loanduration - 1)));
+			let dailyEmi = emi/30;
+			let streamAmount = dailyEmi/86400;
+
+			let loanApplObject =  {
+				loanId: loanAccountNum,
+				name: applicantname,
+				email: applicantEmail,
+				panCard: kyc1,
+				uid: kyc2,
+				purpose: purpose,
+				collateral: guaranteer,
+				loanTenure: loanTenure,
+				amount: loanamount,
+				loanEndDate: currentDate,
+				appliedOn: new Date(),
+				streamAmount: streamAmount,
+				dailyEmi: dailyEmi,
+				monthlyEmi: emi,
+				contractAddress: "",
+				status: "",
+				txHash: "" 
+			}
+
+			let applications = [];
+			applications = JSON.parse(localStorage.getItem("loanApplications"));
+			if(applications == null)
+				applications = [];
+
+			coinContract.deploy({
+									data: LoanRequest.bytecode,
+									arguments:[
+										applicantname, applicantEmail, kyc1, kyc2, purpose, guaranteer,loanamount , 290, loanTenure//                 -9_token
+									]
+									}).send({from: walletAddress}, function(error, transactionHash){ loanApplObject.txHash = transactionHash; })
+									.on('error', function(error){ debugger; alert("Failed with error: " + error.message); document.getElementById("applyloan").disabled = false; })
+									.on('transactionHash', function(transactionHash){ loanApplObject.txHash = transactionHash })
+									.on('receipt', function(receipt){
+									
+										loanApplObject.contractAddress = receipt.contractAddress;
+										loanApplObject.status = "Applied";
+										applications.push(loanApplObject);
+										localStorage.setItem("loanApplications", JSON.stringify(applications));
+										console.log(applications);
+										document.getElementById("applyloan").disabled = false;
+										alert("Loan application successfully submitted");
+									})
+									.on('confirmation', function(confirmationNumber, receipt){ });	
+		}
 	
 	
-
-	// in days
-	
-
 	
 	},
     enableReinitialize: true
