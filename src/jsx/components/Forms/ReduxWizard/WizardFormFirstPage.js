@@ -225,7 +225,9 @@ export default compose(
 				monthlyEmi: emi,
 				contractAddress: "",
 				status: "",
-				txHash: "" 
+				txHash: "", 
+				borrower: walletAddress,
+				lender: "" 
 			}
 
 			let applications = [];
@@ -233,23 +235,49 @@ export default compose(
 			if(applications == null)
 				applications = [];
 
+			let isUpdated = false;
 			coinContract.deploy({
 									data: LoanRequest.bytecode,
 									arguments:[
 										applicantname, applicantEmail, kyc1, kyc2, purpose, guaranteer,loanamount , 290, loanTenure//                 -9_token
 									]
 									}).send({from: walletAddress}, function(error, transactionHash){ loanApplObject.txHash = transactionHash; })
-									.on('error', function(error){ debugger; alert("Failed with error: " + error.message); document.getElementById("applyloan").disabled = false; })
+									.on('error', function(error){
+										toast.error("Failed with error: " + error.message, {
+											position: "top-right",
+											autoClose: 5000,
+											hideProgressBar: false,
+											closeOnClick: true,
+											pauseOnHover: true,
+											draggable: true,
+										});
+										 document.getElementById("applyloan").disabled = false; })
 									.on('transactionHash', function(transactionHash){ loanApplObject.txHash = transactionHash })
 									.on('receipt', function(receipt){
 									
-										loanApplObject.contractAddress = receipt.contractAddress;
-										loanApplObject.status = "Applied";
-										applications.push(loanApplObject);
-										localStorage.setItem("loanApplications", JSON.stringify(applications));
-										console.log(applications);
-										document.getElementById("applyloan").disabled = false;
-										alert("Loan application successfully submitted");
+										if(!isUpdated)
+										{
+											isUpdated = true;
+											loanApplObject.contractAddress = receipt.contractAddress;
+											loanApplObject.status = "Applied";
+	
+											
+											applications.push(loanApplObject);
+											localStorage.setItem("loanApplications", JSON.stringify(applications));
+											console.log(applications);
+											document.getElementById("applyloan").disabled = false;
+	
+											toast.success("Loan application successfully submitted", {
+												position: "top-right",
+												autoClose: 5000,
+												hideProgressBar: false,
+												closeOnClick: true,
+												pauseOnHover: true,
+												draggable: true,
+											});
+
+										}
+										
 									})
 									.on('confirmation', function(confirmationNumber, receipt){ });	
 		}
