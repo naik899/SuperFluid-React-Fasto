@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 
 import PageTitle from "../../../layouts/PageTitle";
 
@@ -7,6 +7,7 @@ import Web3 from "web3";
 
 const CreateFlow = () => {
 	
+  const [walletAddress, setWallet] = this.state.walletAddress;
     useEffect(() => {
         initSuperFluid();
       });
@@ -20,15 +21,15 @@ const CreateFlow = () => {
           });
     
           await sf.initialize();
-          const walletAddress1 = await window.ethereum.request({
-            method: "eth_requestAccounts",
-            params: [
-              {
-                eth_accounts: {},
-              },
-            ],
-          });
-          walletAddress = walletAddress1[0];
+          // const walletAddress1 = await window.ethereum.request({
+          //   method: "eth_requestAccounts",
+          //   params: [
+          //     {
+          //       eth_accounts: {},
+          //     },
+          //   ],
+          // });
+          //walletAddress = walletAddress1[0];
     
           const carol = sf.user({
             address: walletAddress,

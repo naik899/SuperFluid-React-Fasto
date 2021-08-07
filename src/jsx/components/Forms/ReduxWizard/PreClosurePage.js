@@ -5,6 +5,10 @@ import { connect } from "react-redux";
 import validate from "./validate";
 import renderField from "./renderField";
 
+import Web3 from "web3";
+
+import LoanRequest  from  "../../../../contracts/LoanRequest.json";
+
 const colors = ['Loan Account 1', 'Loan Account 2', 'Loan Account 3', 'Loan Account 4'];
 
 const renderColorSelector = ({ input, meta: { touched, error } }) => (
@@ -73,10 +77,38 @@ export default compose(
     destroyOnUnmount: false, //        <------ preserve form data
     forceUnregisterOnUnmount: true, // <------ unregister fields on unmount
     validate,
-	onSubmit:() =>{
+	onSubmit: async () =>{
 		//apply for loan
 		console.log("Pre Closure");
-	},
+    let web3 = new Web3(Web3.givenProvider);
+    let walletAddress =  localStorage.getItem('walletAddress');
+    const coinContract = new web3.eth.Contract(LoanRequest.abi, "0xb471ADA73d8F8479579fBdD165412aDf945A308E");
+   let data =  await coinContract.methods.getLoanDetails().call({from: walletAddress});
+   debugger;
+   console.log(data);
+    // let finalValue = await coinContract.loanDuration.call({from: walletAddress});
+    // console.log(finalValue);
+
+
+
+    // coinContract.deploy({
+    //                         data: LoanRequest.bytecode,
+    //                         arguments:[
+    //                             "Gyan Lakshmi","a@b.com", "AXXXXXXXXX","173117411731", "Testing", "1231232131", 240, 290, 60//                 -9_token
+    //                         ]
+    //                         }).send({from: walletAddress}, function(error, transactionHash){ console.log("Tx has:" + transactionHash); })
+    //                         .on('error', function(error){ console.log(error); })
+    //                         .on('transactionHash', function(transactionHash){ console.log("New Tx: " + transactionHash) })
+    //                         .on('receipt', function(receipt){
+    //                           console.log("Received");
+    //                            console.log(receipt.contractAddress) // contains the new contract address
+    //                         })
+    //                         .on('confirmation', function(confirmationNumber, receipt){ console.log("Confirmation:" + confirmationNumber + " , Receipt: " + receipt
+    //                         )})
+    //                         .then(function(newContractInstance){
+    //                             console.log(newContractInstance.options.address) // instance with the new contract address
+    //                         });
+                          },
     enableReinitialize: true
   })
 )(PreClosurePage);

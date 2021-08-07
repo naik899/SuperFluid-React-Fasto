@@ -219,8 +219,8 @@ const SideBar = () => {
           </li>
           <li className={`${app.includes(path) ? "mm-active" : ""}`}>
             <Link className="has-arrow ai-icon" to="#" >
-              <i className="flaticon-381-transfer"></i>
-              <span className="nav-text">Transaction</span>
+              <i className="flaticon-381-upload"></i>
+              <span className="nav-text">Loan</span>
             </Link>
             <ul >
               <li><Link className={`${path === "create-flow" ? "mm-active" : ""}`} to="/create-flow">Create New Flow</Link></li>
@@ -232,6 +232,20 @@ const SideBar = () => {
               
             </ul>
           </li>
+
+          <li className={`${charts.includes(path) ? "mm-active" : ""}`}>
+            <Link className="has-arrow ai-icon" to="#" >
+
+              <i className="flaticon-381-help-1"></i>
+              <span className="nav-text">Lender</span>
+            </Link>
+				<ul>
+				  <li><Link className={`${path === "lender" ? "mm-active" : ""}`} to="/lender">View applications</Link></li>
+				  <li><Link className={`${path === "lend-money" ? "mm-active" : ""}`} to="/lend-money">Lend Money</Link></li>
+				</ul>
+          </li>
+
+        
           <li className={`${charts.includes(path) ? "mm-active" : ""}`}>
             <Link className="has-arrow ai-icon" to="#" >
               <i className="flaticon-381-help-1"></i>

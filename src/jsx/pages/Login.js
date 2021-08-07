@@ -1,28 +1,20 @@
 import React,{ useState } from "react";
 import { connect, useDispatch } from 'react-redux';
 import { Link } from "react-router-dom";
-import Loader from '../pages/Loader/Loader';
 import {
     loadingToggleAction,
     loginAction,
-	authenticate
 } from '../../store/actions/AuthActions';
-// image
-import logo from "../../images/logo-full.png";
+
 import logo2 from "../../images/logo-full-white.png";
 import login from "../../images/login-bg.jpg";
 import { connectWallet } from  "../../services/Interact";
-import SuperfluidSDK from "@superfluid-finance/js-sdk";
-import Web3 from "web3";
 
 function Login(props) {
-	const [email, setEmail] = useState('demo@demo.com');
+	const [email] = useState('demo@demo.com');
     let errorsObj = { email: '', password: '' };
-    const [errors, setErrors] = useState(errorsObj);
-    const [password, setPassword] = useState('123456');
+    const [password] = useState('123456');
 
-	const [walletAddress, setWallet] = useState("");
- 	const [status, setStatus] = useState("");
 
     const dispatch = useDispatch();
   
@@ -31,8 +23,10 @@ function Login(props) {
 		e.preventDefault();
 
 		const walletResponse = await connectWallet();
-		setStatus(walletResponse.status);
-		setWallet(walletResponse.address);
+
+		localStorage.setItem('walletAddress', walletResponse.address);
+		localStorage.setItem('status',walletResponse.status);
+		
 		dispatch(loadingToggleAction(true));
 		dispatch(loginAction(email, password, props.history));
 	}
