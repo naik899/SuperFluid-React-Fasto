@@ -1,20 +1,12 @@
 import React, { useState, useRef, useEffect } from "react";
-import {  Dropdown } from "react-bootstrap";
+import { Dropdown } from "react-bootstrap";
 // import data from "./tableData.js";
 
-
-
-
-
 const PatientTable = () => {
- 
-
   let applications = [];
-    applications = JSON.parse(localStorage.getItem("loanApplications"));
-    console.log(applications);
-  
-  
- 
+  applications = JSON.parse(localStorage.getItem("loanApplications"));
+  const [appfromlocalStorage, setAppfromlocalStorage] = useState(applications);
+
   return (
     <div className="col-12">
       <div className="card">
@@ -33,7 +25,6 @@ const PatientTable = () => {
               >
                 <thead>
                   <tr role="row">
-                    
                     <th
                       className="sorting"
                       tabIndex={0}
@@ -125,17 +116,16 @@ const PatientTable = () => {
                   </tr>
                 </thead>
                 <tbody>
+                  {(() => {
+                    if (appfromlocalStorage) {
+                      {
+                        appfromlocalStorage.map((numList, i) => (
+                          <tr key={i}>{<td key={i}>{numList.amount}</td>}</tr>
+                        ));
+                      }
+                    }
+                  })()}
 
-                {
-                  this.applications.map((numList,i) =>(
-                    <tr key={i}>
-                     {
-                        <td key={i}>{numList.amount}</td>
-                     }
-                    </tr>
-                 ))
-                }
- 
                   {/* <tr role="row"  >
                    
              
@@ -187,10 +177,8 @@ const PatientTable = () => {
                     </td>
                   </tr>
                   */}
-                  </tbody>
+                </tbody>
               </table>
-
-              
             </div>
           </div>
         </div>
