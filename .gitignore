@@ -1,1 +1,7 @@
 node_modules
+build/robots.txt
+build/manifest.json
+build/logo512.png
+build/logo192.png
+build/favicon.ico
+.eslintcache
