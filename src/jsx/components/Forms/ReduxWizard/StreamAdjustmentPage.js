@@ -29,7 +29,7 @@ const walletAddress = (localStorage.getItem("walletAddress"));
 const loanApplication = applications
   .filter((d) => d.borrower == walletAddress)
   .map((d) => d.loanId);
-localStorage.setItem("steamids", JSON.stringify(loanApplication));
+  
 // const loanApplication = JSON.parse(localStorage.getItem("steamids"));
 
 const loanSelector = ({ input, meta: { touched, error } }) => (
