@@ -6,9 +6,9 @@ import "react-toastify/dist/ReactToastify.css";
 import SuperfluidSDK  from "@superfluid-finance/js-sdk";
 // import data from "./tableData.js";
 
-const PatientTable = () => {
+const EmiTable = () => {
   let applications = [];
-  applications = JSON.parse(localStorage.getItem("loanApplications"));
+  applications = JSON.parse(localStorage.getItem("installmentQueue"));
   const [appfromlocalStorage, setAppfromlocalStorage] = useState(applications);
 
  
@@ -16,6 +16,7 @@ const PatientTable = () => {
   async function lendMoney(details) {
     let web3 = new Web3(Web3.givenProvider);
 		let walletAddress =  localStorage.getItem('walletAddress');
+    console.log(details.contractAddress);
 		const lendContract = new web3.eth.Contract(LoanRequest.abi, details.contractAddress);
 
     let tokenId = "0x5943F705aBb6834Cad767e6E4bB258Bc48D9C947";
@@ -38,18 +39,7 @@ const PatientTable = () => {
       });
 
 
-      details.status = "Disbursed";
-      details.lender = walletAddress;
-
-      let index = applications.findIndex(s=> s.loanId == details.loanId);
-      if(index > -1)
-      {
-        applications.splice(index, 1); 
-        localStorage.setItem("loanApplications", JSON.stringify(applications));
-
-        applications.push(details);
-        localStorage.setItem("loanApplications", JSON.stringify(applications));
-      }
+      
       
 
       let queueItem = [];
@@ -171,22 +161,8 @@ const PatientTable = () => {
                       aria-label="Doctor Assgined: activate to sort column ascending"
                       style={{ width: 120 }}
                     >
-                      Loan Status
-                    </th>
-
-                    <th
-                      className="sorting"
-                      tabIndex={0}
-                      aria-controls="example5"
-                      rowSpan={1}
-                      colSpan={1}
-                      aria-label="Doctor Assgined: activate to sort column ascending"
-                      style={{ width: 120 }}
-                    >
                       Lend Money
                     </th>
-
-                   
                     
                   </tr>
                 </thead>
@@ -202,9 +178,7 @@ const PatientTable = () => {
 
                             {<td key={i}>{numList.amount}</td>}
                             {<td key={i}>{numList.loanTenure}</td>}
-                            {<td key={i}>{numList.status}</td>}
                             {<td key={i}><button id={numList.loanId} className="btn btn-primary" onClick={() => lendMoney(numList)}>Lend Money</button></td>}
-                           
                           </tr>
                         )))
                       }
@@ -273,4 +247,4 @@ const PatientTable = () => {
   );
 };
 
-export default PatientTable;
+export default EmiTable;
