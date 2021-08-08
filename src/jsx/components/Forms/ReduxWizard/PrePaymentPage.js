@@ -9,13 +9,24 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Loan  from "../../../../contracts/Loan.json";
 
-const colors = ["22622", "89007"];
+
+const applications = JSON.parse(localStorage.getItem("loanApplications"));
+const walletAddress = (localStorage.getItem("walletAddress"));
+let loanApplication = [];
+if(applications != null )
+{
+ 
+  loanApplication = applications
+  .filter((d) => d.borrower == walletAddress)
+  .map((d) => d.loanId);
+
+}
 
 const renderColorSelector = ({ input, meta: { touched, error } }) => (
   <div>
     <select className="form-control" {...input}>
       <option value="">Select a Loan Account</option>
-      {colors.map(val => <option value={val} key={val}>{val}</option>)}
+      {loanApplication.map(val => <option value={val} key={val}>{val}</option>)}
     </select>
     {touched && error && <span>{error}</span>}
   </div>
@@ -130,17 +141,21 @@ export default compose(
       });
 
 
-     
+      details.outStanding = details.outStanding - 0.163;
+      let index = applications.findIndex(s=> s.loanId == details.loanId);
+      if(index > -1)
+      {
+        applications.splice(index, 1); 
+        localStorage.setItem("loanApplications", JSON.stringify(applications));
+
+        applications.push(details);
+        localStorage.setItem("loanApplications", JSON.stringify(applications));
+      }
+      
+      
       
 
-      let queueItem = [];
-      queueItem = JSON.parse(localStorage.getItem("installmentQueue"));
-      if(queueItem == null)
-        queueItem= [];
-
-      let queueItemObject = { "borrower": details.borrower, "loanId": details.loanId, "status": "start" };
-      queueItem.push(queueItemObject);
-      localStorage.setItem("installmentQueue", JSON.stringify(queueItem));
+      
       
       toast.success("Transaction is successful", {
 				position: "top-right",

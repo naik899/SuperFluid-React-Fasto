@@ -19,7 +19,6 @@ const PatientTable = () => {
 		const lendContract = new web3.eth.Contract(LoanRequest.abi, details.contractAddress);
 
     let tokenId = "0x5943F705aBb6834Cad767e6E4bB258Bc48D9C947";
-    debugger;
     const transactionParameters = {
       to: details.borrower, // Required except during contract publications.
       from: walletAddress, // must match user's active address.
@@ -42,6 +41,7 @@ const PatientTable = () => {
 
       details.status = "Disbursed";
       details.lender = walletAddress;
+      details.outStanding = 1.57;
 
       let index = applications.findIndex(s=> s.loanId == details.loanId);
       if(index > -1)

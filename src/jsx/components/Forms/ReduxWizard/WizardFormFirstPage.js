@@ -229,7 +229,8 @@ export default compose(
 				status: "",
 				txHash: "", 
 				borrower: walletAddress,
-				lender: "" 
+				lender: "",
+				outStanding: 0
 			}
 
 			let applications = [];

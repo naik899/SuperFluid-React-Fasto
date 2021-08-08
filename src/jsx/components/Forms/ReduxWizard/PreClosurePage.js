@@ -4,18 +4,36 @@ import { compose } from "redux";
 import { connect } from "react-redux";
 import validate from "./validate";
 import renderField from "./renderField";
-
+import SuperfluidSDK from "@superfluid-finance/js-sdk";
 import Web3 from "web3";
 
-import LoanRequest  from  "../../../../contracts/LoanRequest.json";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-const colors = ['Loan Account 1', 'Loan Account 2', 'Loan Account 3', 'Loan Account 4'];
+import Loan  from  "../../../../contracts/Loan.json";
+
+const applications = JSON.parse(localStorage.getItem("loanApplications"));
+const walletAddress = (localStorage.getItem("walletAddress"));
+let loanApplication = [];
+if(applications != null )
+{
+ 
+  loanApplication = applications
+  .filter((d) => d.borrower == walletAddress)
+  .map((d) => d.loanId);
+
+}
+
+function ValueSelected()
+{
+  console.log("selected");
+}
 
 const renderColorSelector = ({ input, meta: { touched, error } }) => (
   <div>
     <select className="form-control" {...input}>
       <option value="">Select a Loan Account</option>
-      {colors.map(val => <option value={val} key={val}>{val}</option>)}
+      {loanApplication.map(val => <option value={val} key={val}>{val}</option>)}
     </select>
     {touched && error && <span>{error}</span>}
   </div>
@@ -23,14 +41,31 @@ const renderColorSelector = ({ input, meta: { touched, error } }) => (
 
 const PreClosurePage = props => {
   const { handleSubmit } = props;
+
+  // let outstandingAmount = document.getElementsByName("amount")[0];
+  // outstandingAmount.disabled = true;
+
+  
   return (
+    <>
+    <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
 		<form onSubmit={handleSubmit}>
 			<div className="validate-redux-form row">
 
 
                 <div className="col-sm-8">
                     <div className="form-group">
-                        <Field name="favoriteColor" component={renderColorSelector} />
+                        <Field name="loanId" onselect={() => ValueSelected()} component={renderColorSelector} />
                     </div>
                     
                 </div>
@@ -40,9 +75,9 @@ const PreClosurePage = props => {
                 </div>
 
           
-				<div className="col-sm-8">
+				{/* <div className="col-sm-8">
 					<Field name="amount" type="text" component={renderField} label="Outstanding amount in ETH"/>
-				</div>	
+				</div>	 */}
 				<div className="col-sm-4">
                     
                     
@@ -59,15 +94,18 @@ const PreClosurePage = props => {
 				</div>
 			</div>
 		</form>
+  
+    </>
   );
 };
 
 export default compose(
 	connect((state, props) => {
+
     return {
 		initialValues: {
 		
-			amount: "225"
+      
 
 		}
     };
@@ -80,35 +118,62 @@ export default compose(
 	onSubmit: async () =>{
 		//apply for loan
 		console.log("Pre Closure");
-    let web3 = new Web3(Web3.givenProvider);
-    let walletAddress =  localStorage.getItem('walletAddress');
-    const coinContract = new web3.eth.Contract(LoanRequest.abi, "0xb471ADA73d8F8479579fBdD165412aDf945A308E");
-   let data =  await coinContract.methods.getLoanDetails().call({from: walletAddress});
-   debugger;
-   console.log(data);
-    // let finalValue = await coinContract.loanDuration.call({from: walletAddress});
-    // console.log(finalValue);
+
+    let loanId = document.getElementsByName("loanId")[0].value;
+    let loanDetails = applications.filter(s=> s.loanId == loanId);
+    
+    
+  //   let web3 = new Web3(Web3.givenProvider);
+  //   let walletAddress =  localStorage.getItem('walletAddress');
+  //   const coinContract = new web3.eth.Contract(Loan.abi, loanDetails[0].contractAddress);
+
+ 
+
+  //  let tokenId = "0x5943F705aBb6834Cad767e6E4bB258Bc48D9C947";
+  //   const transactionParameters = {
+  //     to: loanDetails[0].lender, // Required except during contract publications.
+  //     from: walletAddress, // must match user's active address.
+  //     gas: '0x76c0', // 30400
+  //     gasPrice: '0x9184e72a000', // 10000000000000
+  //     value: "2441406250", //2441406250
+  //     data: coinContract.methods
+  //       .preClosure()
+  //       .encodeABI(),
+  //   };
+
+  //   const txHash = await window.ethereum.request({
+  //     method: "eth_sendTransaction",
+  //     params: [transactionParameters],
+  //   });
 
 
 
-    // coinContract.deploy({
-    //                         data: LoanRequest.bytecode,
-    //                         arguments:[
-    //                             "Gyan Lakshmi","a@b.com", "AXXXXXXXXX","173117411731", "Testing", "1231232131", 240, 290, 60//                 -9_token
-    //                         ]
-    //                         }).send({from: walletAddress}, function(error, transactionHash){ console.log("Tx has:" + transactionHash); })
-    //                         .on('error', function(error){ console.log(error); })
-    //                         .on('transactionHash', function(transactionHash){ console.log("New Tx: " + transactionHash) })
-    //                         .on('receipt', function(receipt){
-    //                           console.log("Received");
-    //                            console.log(receipt.contractAddress) // contains the new contract address
-    //                         })
-    //                         .on('confirmation', function(confirmationNumber, receipt){ console.log("Confirmation:" + confirmationNumber + " , Receipt: " + receipt
-    //                         )})
-    //                         .then(function(newContractInstance){
-    //                             console.log(newContractInstance.options.address) // instance with the new contract address
-    //                         });
-                          },
+    const sf = new SuperfluidSDK.Framework({
+      web3: new Web3(window.ethereum),
+    });
+    await sf.initialize();
+
+
+    const carol = sf.user({
+      address: walletAddress,
+      token: "0x5943F705aBb6834Cad767e6E4bB258Bc48D9C947",
+    });
+
+    await carol.flow({
+      recipient: loanDetails[0].lender,
+      flowRate: "0",
+    });
+
+    loanDetails[0].outStanding = 0;
+    debugger;
+    let index = applications.findIndex(s=> s.loanId == loanDetails[0].loanId);
+    if(index > -1)
+    {
+      applications.splice(index, 1); 
+      localStorage.setItem("loanApplications", JSON.stringify(applications));
+    }
+  
+   },
     enableReinitialize: true
   })
 )(PreClosurePage);

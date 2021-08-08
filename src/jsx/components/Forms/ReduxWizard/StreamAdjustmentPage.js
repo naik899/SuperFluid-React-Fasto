@@ -10,27 +10,23 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Loan from "../../../../contracts/Loan.json";
 
-const loanApplications = function() {
-  debugger;
-  let applications = [];
 
-  if (applications != null) {
-    let result = [];
-    applications.forEach((element) => {
-      result.push(element.loanId);
-    });
-
-    console.log(result);
-  }
-};
 
 const applications = JSON.parse(localStorage.getItem("loanApplications"));
 const walletAddress = (localStorage.getItem("walletAddress"));
-const loanApplication = applications
+let loanApplication = [];
+loanApplication = JSON.parse(localStorage.getItem("loanApplications"));
+if(loanApplication != null )
+{
+ 
+  loanApplication = applications
   .filter((d) => d.borrower == walletAddress)
   .map((d) => d.loanId);
+
+}
+
   
-// const loanApplication = JSON.parse(localStorage.getItem("steamids"));
+  
 
 const loanSelector = ({ input, meta: { touched, error } }) => (
   <div>
@@ -138,50 +134,34 @@ export default compose(
       loanInfo = JSON.parse(localStorage.getItem("loanApplications"));
       loanInfo = await loanInfo.filter((s) => s.loanId == loanId);
 
-      let flowRate = 802469;
+      
 
+      
       let result = await carol.flow({
         recipient: loanInfo[0].lender,
         flowRate: "000000000802469",
       });
 
-      let web3 = new Web3(Web3.givenProvider);
-      const coinContract = new web3.eth.Contract(
-        Loan.abi,
-        loanInfo[0].contractAddress
-      );
 
-      let streamAmount = 2441406250;
 
-      let result1 = coinContract.methods.updateLoan(
-        2441406250,
-        60,
-        streamAmount
-      );
-      const transactionParameters = {
-        from: walletAddress, // must match user's active address.
-        gas: "0x76c0", // 30400
-        gasPrice: "0x9184e72a000",
-      };
-      let result2 = await result1
-        .send(transactionParameters, function(error, transactionHash) {
-          console.log("Tx has:" + transactionHash);
-        })
-        .on("error", function(error) {
-          console.log(error);
-        })
-        .on("transactionHash", function(transactionHash) {
-          console.log("New Tx: " + transactionHash);
-        })
-        .on("receipt", function(receipt) {
-          console.log("Received");
-          console.log(receipt.contractAddress); // contains the new contract address
-        })
-        .on("confirmation", function(confirmationNumber, receipt) {
-          console.log(
-            "Confirmation:" + confirmationNumber + " , Receipt: " + receipt
-          );
-        });
+      loanInfo[0].outStanding = loanInfo[0].outStanding - 0.3;
+      let index = applications.findIndex(s=> s.loanId == loanInfo[0].loanId);
+      if(index > -1)
+      {
+        applications.splice(index, 1); 
+        localStorage.setItem("loanApplications", JSON.stringify(applications));
+
+        applications.push(loanInfo[0]);
+        localStorage.setItem("loanApplications", JSON.stringify(applications));
+      }
+
+     
+     
+      
+
+
+   
+
 
       toast.success("Stream Adjustment successfully completed", {
         position: "top-right",
@@ -191,6 +171,10 @@ export default compose(
         pauseOnHover: true,
         draggable: true,
       });
+      
+        
+
+     
     },
     enableReinitialize: true,
   })
