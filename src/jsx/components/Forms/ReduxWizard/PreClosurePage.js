@@ -165,7 +165,6 @@ export default compose(
     });
 
     loanDetails[0].outStanding = 0;
-    debugger;
     let index = applications.findIndex(s=> s.loanId == loanDetails[0].loanId);
     if(index > -1)
     {

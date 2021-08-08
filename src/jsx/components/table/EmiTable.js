@@ -8,7 +8,11 @@ import SuperfluidSDK  from "@superfluid-finance/js-sdk";
 
 const EmiTable = () => {
   let applications = [];
-  applications = JSON.parse(localStorage.getItem("installmentQueue"));
+  applications = JSON.parse(localStorage.getItem("loanApplications"));
+  if(applications != null)
+  {
+    applications = applications.filter(s=> s.status == "Applied");
+  }
   const [appfromlocalStorage, setAppfromlocalStorage] = useState(applications);
 
  
@@ -16,7 +20,6 @@ const EmiTable = () => {
   async function lendMoney(details) {
     let web3 = new Web3(Web3.givenProvider);
 		let walletAddress =  localStorage.getItem('walletAddress');
-    console.log(details.contractAddress);
 		const lendContract = new web3.eth.Contract(LoanRequest.abi, details.contractAddress);
 
     let tokenId = "0x5943F705aBb6834Cad767e6E4bB258Bc48D9C947";
@@ -25,7 +28,8 @@ const EmiTable = () => {
       from: walletAddress, // must match user's active address.
       gas: '0x76c0', // 30400
       gasPrice: '0x9184e72a000', // 10000000000000
-      value: '244140625000000', //2441406250
+     // value: (parseFloat(details.amount) * Math.pow(10, 18)).toString(), //2441406250
+     value: "1220703125000000",
       data: lendContract.methods
         .lendEther()
         .encodeABI(),
@@ -39,7 +43,19 @@ const EmiTable = () => {
       });
 
 
-      
+      details.status = "Disbursed";
+      details.lender = walletAddress;
+      details.outStanding = 1.57;
+
+      let index = applications.findIndex(s=> s.loanId == details.loanId);
+      if(index > -1)
+      {
+        applications.splice(index, 1); 
+        localStorage.setItem("loanApplications", JSON.stringify(applications));
+
+        applications.push(details);
+        localStorage.setItem("loanApplications", JSON.stringify(applications));
+      }
       
 
       let queueItem = [];
@@ -161,8 +177,11 @@ const EmiTable = () => {
                       aria-label="Doctor Assgined: activate to sort column ascending"
                       style={{ width: 120 }}
                     >
-                      Lend Money
+                      Loan Status
                     </th>
+
+
+                   
                     
                   </tr>
                 </thead>
@@ -178,64 +197,16 @@ const EmiTable = () => {
 
                             {<td key={i}>{numList.amount}</td>}
                             {<td key={i}>{numList.loanTenure}</td>}
-                            {<td key={i}><button id={numList.loanId} className="btn btn-primary" onClick={() => lendMoney(numList)}>Lend Money</button></td>}
+                            {<td key={i}>{numList.status}</td>}
+                           
+                           
                           </tr>
                         )))
                       }
                     }
                   })()}
 
-                  {/* <tr role="row"  >
-                   
-             
-
-                    <td >#P-00001</td>
-                    <td>26/02/2020, 12:42 AM</td>
-                    <td>Tiger Nixon</td>
-                    <td>Dr. Cedric</td>
-                    <td>Cold &amp; Flu</td>
-                    <td>
-                      <span className="badge light badge-danger">
-                        <i className="fa fa-circle text-danger mr-1" />
-                        New Patient
-                      </span>
-                    </td>
-                    <td>AB-001</td>
-                    <td>
-                      <Dropdown className="dropdown ml-auto text-right">
-                        <Dropdown.Toggle
-                          variant=""
-                          className="btn-link i-false"
-                          data-toggle="dropdown"
-                        >
-                          <svg
-                            width="24px"
-                            height="24px"
-                            viewBox="0 0 24 24"
-                            version="1.1"
-                          >
-                            <g
-                              stroke="none"
-                              strokeWidth={1}
-                              fill="none"
-                              fillRule="evenodd"
-                            >
-                              <rect x={0} y={0} width={24} height={24} />
-                              <circle fill="#000000" cx={5} cy={12} r={2} />
-                              <circle fill="#000000" cx={12} cy={12} r={2} />
-                              <circle fill="#000000" cx={19} cy={12} r={2} />
-                            </g>
-                          </svg>
-                        </Dropdown.Toggle>
-                        <Dropdown.Menu className="dropdown-menu dropdown-menu-right">
-                          <Dropdown.Item>Accept Patient</Dropdown.Item>
-                          <Dropdown.Item>Reject Order</Dropdown.Item>
-                          <Dropdown.Item>View Details</Dropdown.Item>
-                        </Dropdown.Menu>
-                      </Dropdown>
-                    </td>
-                  </tr>
-                  */}
+                 
                 </tbody>
               </table>
             </div>

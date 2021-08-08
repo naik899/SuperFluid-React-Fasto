@@ -252,8 +252,7 @@ const SideBar = () => {
             </Link>
 				<ul>
 				  <li><Link className={`${path === "messages" ? "mm-active" : ""}`} to="/messages">Messages</Link></li>
-				  <li><Link className={`${path === "chart-chartjs" ? "mm-active" : ""}`} to="/chart-chartjs">Account Statement</Link></li>
-				  <li><Link className={`${path === "chart-chartist" ? "mm-active" : ""}`} to="/chart-chartist">Loan Details</Link></li>
+				  <li><Link className={`${path === "account-statement" ? "mm-active" : ""}`} to="/account-statement">Account Statement</Link></li>
 				</ul>
           </li>
 

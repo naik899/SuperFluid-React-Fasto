@@ -145,80 +145,10 @@ const Markup = () => {
     { url: "logout", component: LogOut },
     { url: "lend-money", component: LendMoney },
     { url: "lender", component: Lender },
+    { url: "account-statement", component: Lender },
     
-    { url: "email-compose", component: Compose },
-    { url: "email-inbox", component: Inbox },
-    { url: "email-read", component: Read },
-    { url: "app-calender", component: Calendar },
-    { url: "post-details", component: PostDetails },
-
-    /// Chart
-    { url: "chart-sparkline", component: SparklineChart },
-    { url: "chart-chartjs", component: ChartJs },
-    { url: "chart-chartist", component: Chartist },
-    { url: "chart-apexchart", component: ApexChart },
-    { url: "chart-rechart", component: RechartJs },
-
-    /// Bootstrap
-    { url: "ui-alert", component: UiAlert },
-    { url: "ui-badge", component: UiBadge },
-    { url: "ui-button", component: UiButton },
-    { url: "ui-modal", component: UiModal },
-    { url: "ui-button-group", component: UiButtonGroup },
-    { url: "ui-accordion", component: UiAccordion },
-    { url: "ui-list-group", component: UiListGroup },
-    { url: "ui-media-object", component: UiMediaObject },
-    { url: "ui-card", component: UiCards },
-    { url: "ui-carousel", component: UiCarousel },
-    { url: "ui-dropdown", component: UiDropDown },
-    { url: "ui-popover", component: UiPopOver },
-    { url: "ui-progressbar", component: UiProgressBar },
-    { url: "ui-tab", component: UiTab },
-    { url: "ui-pagination", component: UiPagination },
-    { url: "ui-typography", component: UiTypography },
-    { url: "ui-grid", component: UiGrid },
-
-    /// Plugin
-    { url: "uc-select2", component: Select2 },
-    { url: "uc-nestable", component: Nestable },
-    { url: "uc-noui-slider", component: MainNouiSlider },
-    { url: "uc-sweetalert", component: MainSweetAlert },
-    { url: "uc-toastr", component: Toastr },
-    { url: "map-jqvmap", component: JqvMap },
-    { url: "uc-lightgallery", component: Lightgallery },
-    { url: "todo", component: Todo },
-    { url: "posts", component: Posts },
-    { url: "create-post", component: createPost },
-    { url: "posts/edit/:id", component: EditPost },
-    { url: "posts/:id", component: SinglePost },
-
-    /// Widget
-    { url: "widget-basic", component: Widget },
-
-    /// Shop
-    { url: "ecom-product-grid", component: ProductGrid },
-    { url: "ecom-product-list", component: ProductList },
-    { url: "ecom-product-detail", component: ProductDetail },
-    { url: "ecom-product-order", component: ProductOrder },
-    { url: "ecom-checkout", component: Checkout },
-    { url: "ecom-invoice", component: Invoice },
-    { url: "ecom-product-detail", component: ProductDetail },
-    { url: "ecom-customers", component: Customers },
-
-    /// Form
-    { url: "form-redux", component: ReduxForm },
-    { url: "form-redux-wizard", component: WizardForm },
-    { url: "form-element", component: Element },
-    { url: "form-wizard", component: Wizard },
-    { url: "form-editor-summernote", component: SummerNote },
-    { url: "form-pickers", component: Pickers },
-    { url: "form-validation-jquery", component: jQueryValidation },
-
-    /// table
-    { url: "table-datatable-basic", component: DataTable },
-    { url: "table-bootstrap-basic", component: BootstrapTable },
-    { url: "sorting-table", component: SortingTable },
-    { url: "filtering-table", component: FilteringTable },
+    
+  
 
     /// pages
     { url: "page-register", component: Registration },

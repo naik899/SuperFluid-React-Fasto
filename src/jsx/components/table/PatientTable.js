@@ -9,6 +9,10 @@ import SuperfluidSDK  from "@superfluid-finance/js-sdk";
 const PatientTable = () => {
   let applications = [];
   applications = JSON.parse(localStorage.getItem("loanApplications"));
+  if(applications != null)
+  {
+    applications = applications.filter(s=> s.status == "Applied");
+  }
   const [appfromlocalStorage, setAppfromlocalStorage] = useState(applications);
 
  
@@ -213,57 +217,7 @@ const PatientTable = () => {
                     }
                   })()}
 
-                  {/* <tr role="row"  >
-                   
-             
-
-                    <td >#P-00001</td>
-                    <td>26/02/2020, 12:42 AM</td>
-                    <td>Tiger Nixon</td>
-                    <td>Dr. Cedric</td>
-                    <td>Cold &amp; Flu</td>
-                    <td>
-                      <span className="badge light badge-danger">
-                        <i className="fa fa-circle text-danger mr-1" />
-                        New Patient
-                      </span>
-                    </td>
-                    <td>AB-001</td>
-                    <td>
-                      <Dropdown className="dropdown ml-auto text-right">
-                        <Dropdown.Toggle
-                          variant=""
-                          className="btn-link i-false"
-                          data-toggle="dropdown"
-                        >
-                          <svg
-                            width="24px"
-                            height="24px"
-                            viewBox="0 0 24 24"
-                            version="1.1"
-                          >
-                            <g
-                              stroke="none"
-                              strokeWidth={1}
-                              fill="none"
-                              fillRule="evenodd"
-                            >
-                              <rect x={0} y={0} width={24} height={24} />
-                              <circle fill="#000000" cx={5} cy={12} r={2} />
-                              <circle fill="#000000" cx={12} cy={12} r={2} />
-                              <circle fill="#000000" cx={19} cy={12} r={2} />
-                            </g>
-                          </svg>
-                        </Dropdown.Toggle>
-                        <Dropdown.Menu className="dropdown-menu dropdown-menu-right">
-                          <Dropdown.Item>Accept Patient</Dropdown.Item>
-                          <Dropdown.Item>Reject Order</Dropdown.Item>
-                          <Dropdown.Item>View Details</Dropdown.Item>
-                        </Dropdown.Menu>
-                      </Dropdown>
-                    </td>
-                  </tr>
-                  */}
+                 
                 </tbody>
               </table>
             </div>
