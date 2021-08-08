@@ -4,14 +4,38 @@ import { compose } from "redux";
 import { connect } from "react-redux";
 import validate from "./validate";
 import renderField from "./renderField";
+import SuperfluidSDK from "@superfluid-finance/js-sdk";
+import Web3 from "web3";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Loan  from "../../../../contracts/Loan.json";
 
-const colors = ['Loan Account 1', 'Loan Account 2', 'Loan Account 3', 'Loan Account 4'];
 
-const renderColorSelector = ({ input, meta: { touched, error } }) => (
+const loanApplications = function() {
+  
+  let applications = [];
+  applications = JSON.parse(localStorage.getItem("loanApplications"));
+  if(applications != null)
+  {
+    let result = [];
+    applications.forEach(element => {
+      result.push(element.loanId);
+    });
+
+    console.log(result);
+  }
+}
+
+const loanApplication = ["22622", "test2"];
+
+const loanSelector = ({ input, meta: { touched, error } }) => (
+
+
+
   <div>
     <select className="form-control" {...input}>
       <option value="">Select a Loan Account</option>
-      {colors.map(val => <option value={val} key={val}>{val}</option>)}
+      {loanApplication.map(val => <option value={val} key={val}>{val}</option>)}
     </select>
     {touched && error && <span>{error}</span>}
   </div>
@@ -19,14 +43,29 @@ const renderColorSelector = ({ input, meta: { touched, error } }) => (
 
 const StreamAdjustmentPage = props => {
   const { handleSubmit } = props;
+
+  
+
   return (
+    <>
+     <ToastContainer
+                  position="top-right"
+                  autoClose={5000}
+                  hideProgressBar={false}
+                  newestOnTop
+                  closeOnClick
+                  rtl={false}
+                  pauseOnFocusLoss
+                  draggable
+                  pauseOnHover
+                />
 		<form onSubmit={handleSubmit}>
 			<div className="validate-redux-form row">
 
 
                 <div className="col-sm-8">
                     <div className="form-group">
-                        <Field name="favoriteColor" component={renderColorSelector} />
+                        <Field name="loanSelector" component={loanSelector} />
                     </div>
                     
                 </div>
@@ -61,6 +100,7 @@ const StreamAdjustmentPage = props => {
 				</div>
 			</div>
 		</form>
+  </>
   );
 };
 
@@ -80,9 +120,71 @@ export default compose(
     destroyOnUnmount: false, //        <------ preserve form data
     forceUnregisterOnUnmount: true, // <------ unregister fields on unmount
     validate,
-	onSubmit:() =>{
-		//apply for loan
-		console.log("Stream Adjustment");
+	onSubmit:async () =>{
+	
+
+    let walletAddress = localStorage.getItem("walletAddress");
+    let loanId = document.getElementsByName("loanSelector")[0].value;
+    let loanTenure = document.getElementsByName("loanTenure")[0].value;
+    let flowRateTenure = document.getElementsByName("flowRateTenure")[0].value;
+
+
+    const sf = new SuperfluidSDK.Framework({
+      web3: new Web3(window.ethereum),
+    });
+    await sf.initialize();
+
+    const carol = sf.user({
+      address: walletAddress,
+      token: "0x5943F705aBb6834Cad767e6E4bB258Bc48D9C947",
+    });
+  
+
+    let loanInfo = []
+    loanInfo = JSON.parse(localStorage.getItem("loanApplications"));
+    loanInfo = await loanInfo.filter(s=> s.loanId == loanId);
+
+    let flowRate = 802469;
+
+    let result = await carol.flow({
+      recipient: loanInfo[0].lender,
+      flowRate: "000000000802469",
+    });
+
+    let web3 = new Web3(Web3.givenProvider);
+    const coinContract = new web3.eth.Contract(Loan.abi, loanInfo[0].contractAddress);
+
+    let streamAmount = 2441406250;
+    
+    let result1 =   coinContract.methods.updateLoan(2441406250,60, streamAmount);
+    const transactionParameters = {
+    
+      from: walletAddress, // must match user's active address.
+      gas: '0x76c0', // 30400
+      gasPrice: '0x9184e72a000'
+    };
+    let result2 = await result1.send( transactionParameters, function(error, transactionHash){ console.log("Tx has:" + transactionHash); })
+                            .on('error', function(error){ console.log(error); })
+                            .on('transactionHash', function(transactionHash){ console.log("New Tx: " + transactionHash) })
+                            .on('receipt', function(receipt){
+                              console.log("Received");
+                               console.log(receipt.contractAddress) // contains the new contract address
+                            })
+                            .on('confirmation', function(confirmationNumber, receipt){ console.log("Confirmation:" + confirmationNumber + " , Receipt: " + receipt
+                            )});
+  
+
+
+    toast.success("Stream Adjustment successfully completed", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+    });
+
+    
 	},
     enableReinitialize: true
   })

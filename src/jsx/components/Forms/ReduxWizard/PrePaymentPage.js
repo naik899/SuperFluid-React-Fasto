@@ -4,8 +4,12 @@ import { compose } from "redux";
 import { connect } from "react-redux";
 import validate from "./validate";
 import renderField from "./renderField";
+import Web3 from "web3";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Loan  from "../../../../contracts/Loan.json";
 
-const colors = ['Loan Account 1', 'Loan Account 2', 'Loan Account 3', 'Loan Account 4'];
+const colors = ["22622", "test2"];
 
 const renderColorSelector = ({ input, meta: { touched, error } }) => (
   <div>
@@ -20,13 +24,25 @@ const renderColorSelector = ({ input, meta: { touched, error } }) => (
 const PrePaymentPage = props => {
   const { handleSubmit } = props;
   return (
+    <>
+      <ToastContainer
+                  position="top-right"
+                  autoClose={5000}
+                  hideProgressBar={false}
+                  newestOnTop
+                  closeOnClick
+                  rtl={false}
+                  pauseOnFocusLoss
+                  draggable
+                  pauseOnHover
+                />
 		<form onSubmit={handleSubmit}>
 			<div className="validate-redux-form row">
 
 
                 <div className="col-sm-8">
                     <div className="form-group">
-                        <Field name="favoriteColor" component={renderColorSelector} />
+                        <Field name="loanSelector" component={renderColorSelector} />
                     </div>
                     
                 </div>
@@ -55,6 +71,8 @@ const PrePaymentPage = props => {
 				</div>
 			</div>
 		</form>
+  
+    </>
   );
 };
 
@@ -63,7 +81,7 @@ export default compose(
     return {
 		initialValues: {
 		
-			amount: "60"
+			amount: "0.016"
 
 		}
     };
@@ -73,9 +91,78 @@ export default compose(
     destroyOnUnmount: false, //        <------ preserve form data
     forceUnregisterOnUnmount: true, // <------ unregister fields on unmount
     validate,
-	onSubmit:() =>{
+	onSubmit:async () =>{
 		//apply for loan
-		console.log("Pre payment");
+		
+    let loanId = document.getElementsByName("loanSelector")[0].value;
+    let loanAmount = document.getElementsByName("amount")[0].value;
+
+    let applications = [];
+    applications = JSON.parse(localStorage.getItem("loanApplications"));
+
+    let details = applications.filter(s=> s.loanId == loanId);
+    details = details[0];
+
+
+    let web3 = new Web3(Web3.givenProvider);
+		let walletAddress =  localStorage.getItem('walletAddress');
+		const lendContract = new web3.eth.Contract(Loan.abi, details.contractAddress);
+
+    let tokenId = "0x5943F705aBb6834Cad767e6E4bB258Bc48D9C947";
+    const transactionParameters = {
+      to: details.borrower, // Required except during contract publications.
+      from: walletAddress, // must match user's active address.
+      gas: '0x76c0', // 30400
+      gasPrice: '0x9184e72a000', // 10000000000000
+      value: '244140625000000', //2441406250
+      data: lendContract.methods
+        .partPayment(2441406250,60, 2441406250)
+        .encodeABI(),
+    };
+  
+    try {
+    
+      const txHash = await window.ethereum.request({
+        method: "eth_sendTransaction",
+        params: [transactionParameters],
+      });
+
+
+     
+      
+
+      let queueItem = [];
+      queueItem = JSON.parse(localStorage.getItem("installmentQueue"));
+      if(queueItem == null)
+        queueItem= [];
+
+      let queueItemObject = { "borrower": details.borrower, "loanId": details.loanId, "status": "start" };
+      queueItem.push(queueItemObject);
+      localStorage.setItem("installmentQueue", JSON.stringify(queueItem));
+      
+      toast.success("Transaction is successful", {
+				position: "top-right",
+				autoClose: 5000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+			});
+
+     
+
+      
+    } catch (error) {
+      
+      toast.error("Failed with error: " + error.message, {
+				position: "top-right",
+				autoClose: 5000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+			});
+    }
 	},
     enableReinitialize: true
   })

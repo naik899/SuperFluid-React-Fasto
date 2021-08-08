@@ -29,17 +29,21 @@ const CreateFlow = () => {
      
 
       async function installements(loanDetails) {
-        console.log("here");
-        // const carol = sf.user({
-        //   address: walletAddress,
-        //   token: "0x5943F705aBb6834Cad767e6E4bB258Bc48D9C947",
-        // });
+       
+        const carol = sf.user({
+          address: walletAddress,
+          token: "0x5943F705aBb6834Cad767e6E4bB258Bc48D9C947",
+        });
       
+
+        let loanInfo = []
+        loanInfo = JSON.parse(localStorage.getItem("loanApplications"));
+        loanInfo = loanInfo.filter(s=> s.loanId == loanDetails.loanId);
   
-        // let result = await carol.flow({
-        //   recipient: "0xA84A00B380a010D85136343451639D29c8aef0ab",
-        //   flowRate: "000000000802469",
-        // });
+        let result = await carol.flow({
+          recipient: loanInfo[0].lender,
+          flowRate: "000000000802469",
+        });
 
         
       
