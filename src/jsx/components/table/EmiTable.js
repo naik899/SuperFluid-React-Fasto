@@ -6,7 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 import SuperfluidSDK  from "@superfluid-finance/js-sdk";
 // import data from "./tableData.js";
 
-const PatientTable = () => {
+const EmiTable = () => {
   let applications = [];
   applications = JSON.parse(localStorage.getItem("loanApplications"));
   if(applications != null)
@@ -180,17 +180,6 @@ const PatientTable = () => {
                       Loan Status
                     </th>
 
-                    <th
-                      className="sorting"
-                      tabIndex={0}
-                      aria-controls="example5"
-                      rowSpan={1}
-                      colSpan={1}
-                      aria-label="Doctor Assgined: activate to sort column ascending"
-                      style={{ width: 120 }}
-                    >
-                      Lend Money
-                    </th>
 
                    
                     
@@ -209,7 +198,7 @@ const PatientTable = () => {
                             {<td key={i}>{numList.amount}</td>}
                             {<td key={i}>{numList.loanTenure}</td>}
                             {<td key={i}>{numList.status}</td>}
-                            {<td key={i}><button id={numList.loanId} className="btn btn-primary" onClick={() => lendMoney(numList)}>Lend Money</button></td>}
+                           
                            
                           </tr>
                         )))
@@ -229,4 +218,4 @@ const PatientTable = () => {
   );
 };
 
-export default PatientTable;
+export default EmiTable;
