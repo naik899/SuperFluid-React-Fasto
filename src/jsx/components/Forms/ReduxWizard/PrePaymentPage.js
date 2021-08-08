@@ -9,7 +9,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Loan  from "../../../../contracts/Loan.json";
 
-const colors = ["22622", "test2"];
+const colors = ["22622", "89007"];
 
 const renderColorSelector = ({ input, meta: { touched, error } }) => (
   <div>
@@ -81,7 +81,7 @@ export default compose(
     return {
 		initialValues: {
 		
-			amount: "0.016"
+			amount: "0.163"
 
 		}
     };
@@ -108,15 +108,17 @@ export default compose(
 		let walletAddress =  localStorage.getItem('walletAddress');
 		const lendContract = new web3.eth.Contract(Loan.abi, details.contractAddress);
 
+
+    //reduce payoff amount  
     let tokenId = "0x5943F705aBb6834Cad767e6E4bB258Bc48D9C947";
     const transactionParameters = {
-      to: details.borrower, // Required except during contract publications.
+      to: details.lender, // Required except during contract publications.
       from: walletAddress, // must match user's active address.
       gas: '0x76c0', // 30400
       gasPrice: '0x9184e72a000', // 10000000000000
       value: '244140625000000', //2441406250
       data: lendContract.methods
-        .partPayment(2441406250,60, 2441406250)
+        .partPayment("1130000000000000000",60, 2441406250)
         .encodeABI(),
     };
   

@@ -19,12 +19,14 @@ const PatientTable = () => {
 		const lendContract = new web3.eth.Contract(LoanRequest.abi, details.contractAddress);
 
     let tokenId = "0x5943F705aBb6834Cad767e6E4bB258Bc48D9C947";
+    debugger;
     const transactionParameters = {
       to: details.borrower, // Required except during contract publications.
       from: walletAddress, // must match user's active address.
       gas: '0x76c0', // 30400
       gasPrice: '0x9184e72a000', // 10000000000000
-      value: '244140625000000', //2441406250
+     // value: (parseFloat(details.amount) * Math.pow(10, 18)).toString(), //2441406250
+     value: "1220703125000000",
       data: lendContract.methods
         .lendEther()
         .encodeABI(),
